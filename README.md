@@ -38,6 +38,8 @@ and ultimately you are responsible to a higher authority (ISO WG14).
 This document is stolen from the work of Mike Haertel, Richard O'Keefe,
 and Rob Pike.
 
+![Cancer](images/cancer.jpg)
+
 ## ANSI Standard C
 
 The C dialect we will be using is ANSI standard C, or C89.
@@ -52,7 +54,7 @@ Please try to stay within ANSI standard C as much as possible.
 If you need to write system-dependent code, try to modularize
 and isolate it as much as possible.
 
-## <A NAME="Fighting">Fighting With C</A>
+## Fighting With C
 
 Many of the characteristics of the C language are controversial,
 or even outright mistakes.
@@ -95,7 +97,7 @@ loops should be written as iterative loops.
 Functional language programming techniques which madly allocate memory
 will not work will with current C technology.
 
-## <A NAME="Comments">Comments</A>
+## Comments
 
 Comments can add immensely to the readability of a program, but used
 heavily or poorly placed they can render good code completely
@@ -163,7 +165,7 @@ need to be made explicit.
 This doesn't have to be through comments, though.
 The `assert()` macro is an excellent ``executable comment''.
 
-## <A NAME="Organization">Source File Organization</A>
+## Source File Organization
 
 Use the following organization for source files:
 > <VAR>
@@ -208,7 +210,7 @@ If you've ever tried to track a bug through the SunOS
 Consider using the `makedepend` tools to help maintain
 your source file dependencies in your `Makefile`.
 
-## <A NAME="Declarations">Declarations and Types</A>
+## Declarations and Types
 
 Avoid exporting names outside of individual C source files; i.e.,
 declare as `static` every function and global variable
@@ -349,7 +351,7 @@ other considerations are equal, place larger fields first, as C's
 alignment rules may then permit the compiler to save space by not
 introducing "holes" in the structure layout.
 
-## <A NAME="Preprocessor">Use of the Preprocessor</A>
+## Use of the Preprocessor
 
 For constants, consider using:
 <PRE>
@@ -413,7 +415,7 @@ enum { Foo = UCHAR_MAX + 1, Bar, Baz, Barf };
 (This example also illustrates a reasonable
 use of &lt;limits.h&gt;.)
 
-## <A NAME="Naming">Naming Conventions</A>
+## Naming Conventions
 
 <P>
 Names should be meaningful in the **application** domain,
@@ -672,7 +674,7 @@ size_t n, m, size;	/* results of sizeof or arguments to malloc */
 Foo foo, *pfoo, **ppfoo;	/* sometimes a little hint helps */
 </PRE>
 
-## <A NAME="Indentation">Indentation and Layout</A>
+## Indentation and Layout
 
 Try to stay inside the mythical 79 column limit.  If you can't, look for
 a tasteful place to break the line (there are some ideas below).  Avoid
@@ -927,7 +929,7 @@ in your home directory.
 Note that `indent` tends to mess up `typedef`-defined
 identifiers unless they are explicitly given on the command line.
 
-## <A NAME="Expressions">Expressions and Statements</A>
+## Expressions and Statements
 
 In C, assignments are expressions, not statements.
 This allows multiple assignment
@@ -1006,7 +1008,7 @@ Don't worry about the details, just use this fact to program consistently.
 This does spoil the potential for calling `main()`
 recursively, which is usually a silly thing to do.
 
-## <A NAME="Functions">Functions</A>
+## Functions
 
 Functions should be short and sweet.
 If a function won't fit on a single screen, it's probably too long.
@@ -1021,7 +1023,7 @@ through function arguments or global variables.
 Don't create huge interfaces to enable a decomposition that
 is just not meant to be.
 
-## <A NAME="Complexity">Complexity and Performance</A>
+## Complexity and Performance
 
 There is a temptation to use all sorts of clever techniques to
 optimize the code.
@@ -1057,7 +1059,7 @@ Rob Pike says it better than me:
 <DD>	There is no Rule 6.
 </DL>
 
-## <A NAME="Library">The Standard Library</A>
+## The Standard Library
 
 The standard library is your friend.
 There's no excuse for writing code which already exists there.
@@ -1087,7 +1089,7 @@ Some notes on using particular functions:
 
 </DL>
 
-## <A NAME="Further">Further Reading</A>
+## Further Reading
 
 There is a wonderful Web page on
 [Programming in C](http://www.lysator.liu.se/c/index.html)
