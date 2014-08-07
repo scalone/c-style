@@ -42,30 +42,32 @@ and Rob Pike.
 
 ## ANSI Standard C
 
-The C dialect we will be using is ANSI standard C, or C89.
-If you are not familiar with this dialect, buy the second
-edition of Kernighan and Ritchie's <CITE>The C Programming Language</CITE>
-and Harbison and Steele's <CITE>C: A Reference Manual</CITE>.
-Both of these books are required reading for any C programmer.
-<P>
+The C dialect we will be using is ANSI standard C, or C89. If you are not familiar with this dialect, buy the second edition of Kernighan and Ritchie's <CITE>The C Programming Language</CITE> and Harbison and Steele's <CITE>C: A Reference Manual</CITE>. Both of these books are required reading for any C programmer.
+
 The major improvements to the C language made in this standard are:
 
-Please try to stay within ANSI standard C as much as possible.
-If you need to write system-dependent code, try to modularize
+- The types of function arguments are now specified in function declarations.
+- Several new types, such as void's and enum's have been added.
+- Structures can be passed as arguments and returned from functions.
+- A rich library has been mandated and standardized.
+
+Please try to stay within ANSI standard C as much as possible. If you need to write system-dependent code, try to modularize
 and isolate it as much as possible.
 
 ## Fighting With C
 
-Many of the characteristics of the C language are controversial,
-or even outright mistakes.
-Some of these are worth fighting, some are not worth fighting,
-and some are arguably good decision.
-<P>
+Many of the characteristics of the C language are controversial, or even outright mistakes.
+Some of these are worth fighting, some are not worth fighting, and some are arguably good decision.
+
 The following are mistakes of C which we advocate fighting.
 
-What follows are some controversial aspects of C which are nonetheless
-integral to the language and can't be fought.
-<P>
+- Implicit declarations of int
+- Ambiguous declarations/definitions
+- Surprising precedence of operators
+- Lack of a boolean type and semantics of tests
+
+What follows are some controversial aspects of C which are nonetheless integral to the language and can't be fought.
+
 The syntax for type declarations can get kind of beastly,
 but it's okay if you just remember that declaration follows use,
 as in:
@@ -97,11 +99,13 @@ loops should be written as iterative loops.
 Functional language programming techniques which madly allocate memory
 will not work will with current C technology.
 
+
 ## Comments
 
 Comments can add immensely to the readability of a program, but used
 heavily or poorly placed they can render good code completely
 incomprehensible.
+
 It is far better to err on the side of too few comments rather
 than too many - at least then people can find the code!
 Also, if your code needs a comment to be understood,
@@ -109,7 +113,7 @@ then you should look for ways to rewrite the code to be clearer.
 And comments that aren't there won't get out of date.
 (An inaccurate or misleading comment hurts more than a good
 comment helps!  Be sure that your comments stay right.)
-<P>
+
 That being said, good places to put comments are:
 
 If you do something weird, a comment to explain why can save future
@@ -118,97 +122,83 @@ If you do something clever, brag about it.
 Not only will this inflate your ego, but it
 will also subtly tip off others as to where to look first for bugs.
 Finally, avoid fancy layout or decoration.
-<PRE>
-/* single line comments look like this */
 
-/*
- * Important single line comments look like multi-line comments.
- */
 
-/*
- * Multiline comments look like this.  Put the opening and closing
- * comment sequences on lines by themselves.  Use complete sentences
- * with proper English grammar, capitalization, and punctuation.
- */
+	/* single line comments look like this */
 
-/* but you don't need to punctuate or capitalize one-liners */
-</PRE>
+
+	/*
+	 * Important single line comments look like multi-line comments.
+	 */
+
+	/*
+	 * Multiline comments look like this.  Put the opening and closing
+	 * comment sequences on lines by themselves.  Use complete sentences
+	 * with proper English grammar, capitalization, and punctuation.
+	 */
+
+	/* but you don't need to punctuate or capitalize one-liners */
+	
+
 The opening `/` of all comments should be indented to the same
 level as the code to which it applies, for example:
-<PRE>
-if (fubar()) {
-	/*
-	 * Fouled up beyond all recognition.  Print a nastygram
-	 * and attempt to clean up.  If that doesn't work,
-	 * die horribly, and try to crash the system while
-	 * we're at it.
-	 */
-	...
-}
-</PRE>
+
+	if (fubar()) {
+		/*
+		 * Fouled up beyond all recognition.  Print a nastygram
+		 * and attempt to clean up.  If that doesn't work,
+		 * die horribly, and try to crash the system while
+		 * we're at it.
+		 */
+		...
+	}
+
 If you put a comment on the same line as code, set it off from
 the code with a few tabs.
 Don't continue such a comment across multiple lines.
 For example:
-<PRE>
-printf("hi\n");		/* hello revisited */
-</PRE>
+
+	printf("hi\n");		/* hello revisited */
+
 In fact, try to avoid such comments altogether - if it`s not important
 enough to warrant a complete sentence, does it really need to be said?
-<P>
-The size of the comment should be proportional to the size of the
-code that it refers to.
-Consequently, properties of code that can fit within a single
-24-line screen should not be commented unless they are not obvious.
-By contrast, even obvious global properties and invariants may
-need to be made explicit.
-This doesn't have to be through comments, though.
+
+The size of the comment should be proportional to the size of the code that it refers to. Consequently, properties of code that can fit within a single 24-line screen should not be commented unless they are not obvious. By contrast, even obvious global properties and invariants may need to be made explicit. This doesn't have to be through comments, though.
+
 The `assert()` macro is an excellent ``executable comment''.
 
 ## Source File Organization
 
 Use the following organization for source files:
-> <VAR>
-> includes of system headers
-> 
-> includes of local headers
-> 
-> type and constant definitions
-> 
-> global variables
-> 
-> functions
-> 
-> </VAR>
+
+	<includes of system headers>
+
+	<includes of local headers>
+
+	<type and constant definitions>
+
+	<global variables>
+	
+	<functions>
+
 A reasonable variation might be to have several repetitions of
 the last three sections.
-<P>
+
 Within each section, order your functions in a ``bottom up'' manner -
-defining functions before their use.
-The benefit of avoiding redundant (hence error-prone) forward
-declarations outweighs the minor irritation of
-having to jump to the bottom of the file to find the main functions.
-<P>
+defining functions before their use. The benefit of avoiding redundant (hence error-prone) forward declarations outweighs the minor irritation of having to jump to the bottom of the file to find the main functions.
+
 In header files, use the following organization:
-> <VAR>
-> type and constant definitions
-> 
-> external object declarations
-> 
-> external function declarations
-> 
-> </VAR>
-Again, several repetitions of the above sequence might be reasonable.
-Every object and function declaration must be preceded by the
-keyword `extern`.
-(See [below](#need_extern) for why.)
-<P>
-Now, for a very important rule: Avoid having nested includes, ever.
-I mean it.
-If you've ever tried to track a bug through the SunOS
-`/usr/include` maze, you'll understand why.
-Consider using the `makedepend` tools to help maintain
-your source file dependencies in your `Makefile`.
+
+	type and constant definitions
+
+	external object declarations
+
+	external function declarations
+
+Again, several repetitions of the above sequence might be reasonable. Every object and function declaration must be preceded by the keyword `extern`.
+(See [below](#why_extern) for why.)
+
+Now, for a very important rule: Avoid having nested includes, ever. I mean it. If you've ever tried to track a bug through the SunOS `/usr/include` maze, you'll understand why. Consider using the `makedepend` tools to help maintain your source file dependencies in your `Makefile`.
 
 ## Declarations and Types
 
@@ -216,38 +206,37 @@ Avoid exporting names outside of individual C source files; i.e.,
 declare as `static` every function and global variable
 that you possibly can.
 (I consider it a design flaw that C doesn't do this by default.)
-<P>
+
 When declaring a global function or variable in a header file, use an
 explicit `extern`.
 For functions, provide a full ANSI C prototype.
 For example:
-<PRE>
-extern int errno;
-extern void free(void *);
-</PRE>
+
+	extern int errno;
+	extern void free(void *);
+
 Do not use parameter names in function prototypes -
 you are increasing the risk of a name collision with
 a previously-defined macro, e.g.:
-<PRE>
-#define fileptr stdin
-...
-extern int foo(FILE *fileptr);
-</PRE>
+
+	#define fileptr stdin
+	...
+	extern int foo(FILE *fileptr);
+	
 Instead, document parameter names only as necessary using comments:
-<PRE>
-extern void veccopy(double * /*dst*/, double * /*src*/, size_t);
-</PRE>
-<P>
-<A NAME="need_extern">Why the `extern`?</A>
-It is OK to _declare_ an object any number of times,
-but in all the source files there can be only one definition.
-The `extern` says ``This is only a declaration.''
-(A definition is something that actually allocates and initializes
-storage for the object.)
-Historically,
-<PRE>
-int foo;
-</PRE>
+
+	extern void veccopy(double * /*dst*/, double * /*src*/, size_t);
+
+
+### <A NAME="why_extern">Why the `extern`</A>
+
+It is OK to _declare_ an object any number of times, but in all the source files there can be only one definition.
+
+The `extern` says This is only a declaration.
+	"(A definition is something that actually allocates and initializes storage for the object.) Historically,
+
+	int foo;
+
 was ambiguously treated as either a
 declaration or both declaration and definition depending on linker magic.
 However, ANSI C allows it to be an error for this to appear at
@@ -263,7 +252,9 @@ avoid here is a phenomenon known as ```const` poisoning'',
 where the appearance of `const` in some prototype forces
 you to go through your code and add `const` all over the place.
 <P>
-<A NAME="implicit_int"></A>
+
+<A NAME="implicit_int">Implicit Int</A>
+
 Don't rely on C's implicit `int` typing; i.e., don't say:
 <PRE>
 extern foo;
