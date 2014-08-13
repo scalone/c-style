@@ -71,58 +71,40 @@ What follows are some controversial aspects of C which are nonetheless integral 
 The syntax for type declarations can get kind of beastly,
 but it's okay if you just remember that declaration follows use,
 as in:
-<PRE>
-int (*apfi[])();
-</PRE>
-<P>
+
+	int (*apfi[])();
+
 C is a language with pointers; don't go into denial over this.
 The fact that `a[i]` is equivalent to `*(a + i)`
 is one of the defining characteristics of C, and should be embraced.
-<P>
-Some people recommend creating abstract data types of the form:
-<PRE>
-typedef struct T *T;
-</PRE>
-Then values of the abstract type can be declared as:
-<PRE>
-T t;
-</PRE>
-making `t` look like an object in its own right.
-However this obscures the fact that `t` is a
-reference to an object, rather than an object itself.
-This also prevents passing `t` by value rather
-than by reference.
-<P>
-Lastly, C is an imperative language.
-Although some compilers implement tail recursion,
-loops should be written as iterative loops.
-Functional language programming techniques which madly allocate memory
-will not work will with current C technology.
 
+Some people recommend creating abstract data types of the form:
+
+	typedef struct T *T;
+
+Then values of the abstract type can be declared as:
+
+	T t;
+
+making `t` look like an object in its own right. However this obscures the fact that `t` is a
+reference to an object, rather than an object itself. This also prevents passing `t` by value rather than by reference.
+
+Lastly, C is an imperative language. Although some compilers implement tail recursion,
+loops should be written as iterative loops. Functional language programming techniques which madly allocate memory will not work will with current C technology.
 
 ## Comments
 
-Comments can add immensely to the readability of a program, but used
-heavily or poorly placed they can render good code completely
-incomprehensible.
-
-It is far better to err on the side of too few comments rather
-than too many - at least then people can find the code!
-Also, if your code needs a comment to be understood,
-then you should look for ways to rewrite the code to be clearer.
-And comments that aren't there won't get out of date.
-(An inaccurate or misleading comment hurts more than a good
-comment helps!  Be sure that your comments stay right.)
+Comments can add immensely to the readability of a program, but used heavily or poorly placed they can render good code completely incomprehensible.It is far better to err on the side of too few comments rather than too many - at least then people can find the code! Also, if your code needs a comment to be understood, then you should look for ways to rewrite the code to be clearer. And comments that aren't there won't get out of date. (An inaccurate or misleading comment hurts more than a good comment helps!  Be sure that your comments stay right.)
 
 That being said, good places to put comments are:
 
-If you do something weird, a comment to explain why can save future
-generations from wondering what drug you were on and where to get it.
-If you do something clever, brag about it.
-Not only will this inflate your ego, but it
-will also subtly tip off others as to where to look first for bugs.
-Finally, avoid fancy layout or decoration.
+- a broad overview at the beginning of a module
+- data structure definitions
+- global variable definition
+- at the beginning of a function
+- tricky steps within a function
 
+If you do something weird, a comment to explain why can save future generations from ondering what drug you were on and where to get it. If you do something clever, brag about it. Not only will this inflate your ego, but it will also subtly tip off others as to where to look first for bugs. Finally, avoid fancy layout or decoration.
 
 	/* single line comments look like this */
 
@@ -153,15 +135,12 @@ level as the code to which it applies, for example:
 		...
 	}
 
-If you put a comment on the same line as code, set it off from
-the code with a few tabs.
-Don't continue such a comment across multiple lines.
-For example:
+If you put a comment on the same line as code, set it off from the code with a few tabs.
+Don't continue such a comment across multiple lines. For example:
 
 	printf("hi\n");		/* hello revisited */
 
-In fact, try to avoid such comments altogether - if it`s not important
-enough to warrant a complete sentence, does it really need to be said?
+In fact, try to avoid such comments altogether - if it`s not important enough to warrant a complete sentence, does it really need to be said?
 
 The size of the comment should be proportional to the size of the code that it refers to. Consequently, properties of code that can fit within a single 24-line screen should not be commented unless they are not obvious. By contrast, even obvious global properties and invariants may need to be made explicit. This doesn't have to be through comments, though.
 
@@ -181,36 +160,27 @@ Use the following organization for source files:
 	
 	<functions>
 
-A reasonable variation might be to have several repetitions of
-the last three sections.
+A reasonable variation might be to have several repetitions of the last three sections.
 
-Within each section, order your functions in a ``bottom up'' manner -
-defining functions before their use. The benefit of avoiding redundant (hence error-prone) forward declarations outweighs the minor irritation of having to jump to the bottom of the file to find the main functions.
+Within each section, order your functions in a ``bottom up'' manner - defining functions before their use. The benefit of avoiding redundant (hence error-prone) forward declarations outweighs the minor irritation of having to jump to the bottom of the file to find the main functions.
 
 In header files, use the following organization:
 
-	type and constant definitions
+	<type and constant definitions>
 
-	external object declarations
+	<external object declarations>
 
-	external function declarations
+	<external function declarations>
 
-Again, several repetitions of the above sequence might be reasonable. Every object and function declaration must be preceded by the keyword `extern`.
-(See [below](#why_extern) for why.)
+Again, several repetitions of the above sequence might be reasonable. Every object and function declaration must be preceded by the keyword `extern`. (See [below](#why_extern) for why.)
 
 Now, for a very important rule: Avoid having nested includes, ever. I mean it. If you've ever tried to track a bug through the SunOS `/usr/include` maze, you'll understand why. Consider using the `makedepend` tools to help maintain your source file dependencies in your `Makefile`.
 
 ## Declarations and Types
 
-Avoid exporting names outside of individual C source files; i.e.,
-declare as `static` every function and global variable
-that you possibly can.
-(I consider it a design flaw that C doesn't do this by default.)
+Avoid exporting names outside of individual C source files; i.e., declare as `static` every function and global variable that you possibly can. (I consider it a design flaw that C doesn't do this by default.)
 
-When declaring a global function or variable in a header file, use an
-explicit `extern`.
-For functions, provide a full ANSI C prototype.
-For example:
+When declaring a global function or variable in a header file, use an explicit `extern`. For functions, provide a full ANSI C prototype. For example:
 
 	extern int errno;
 	extern void free(void *);
@@ -232,115 +202,77 @@ Instead, document parameter names only as necessary using comments:
 
 It is OK to _declare_ an object any number of times, but in all the source files there can be only one definition.
 
-The `extern` says This is only a declaration.
-	"(A definition is something that actually allocates and initializes storage for the object.) Historically,
+The `extern` says "This is only a declaration." (A definition is something that actually allocates and initializes storage for the object.) Historically,
 
 	int foo;
 
-was ambiguously treated as either a
-declaration or both declaration and definition depending on linker magic.
-However, ANSI C allows it to be an error for this to appear at
-file scope in more than one place in a program.  Header files should
-_never_ contain object definitions, only type definitions and object
-declarations.  This is why we require `extern` to appear everywhere
-except on the real definition.
-<P>
-In function prototypes, try not to use `const`.  Although the ANSI
-standard makes some unavoidable requirements in the standard library,
-we don't need to widen the problem any further.  What we are trying to
-avoid here is a phenomenon known as ```const` poisoning'',
-where the appearance of `const` in some prototype forces
-you to go through your code and add `const` all over the place.
-<P>
+was ambiguously treated as either a declaration or both declaration and definition depending on linker magic. However, ANSI C allows it to be an error for this to appear at file scope in more than one place in a program.  Header files should _never_ contain object definitions, only type definitions and object declarations.  This is why we require `extern` to appear everywhereexcept on the real definition.
 
-<A NAME="implicit_int">Implicit Int</A>
+In function prototypes, try not to use `const`.  Although the ANSI standard makes some unavoidable requirements in the standard library, we don't need to widen the problem any further.  What we are trying to avoid here is a phenomenon known as "`const` poisoning",
+where the appearance of `const` in some prototype forces you to go through your code and add `const` all over the place.
 
-Don't rely on C's implicit `int` typing; i.e., don't say:
-<PRE>
-extern foo;
-</PRE>
+<A NAME="implicit_int">Don't rely on C's implicit `int` typing; i.e., don't say:</A>
+
+	extern foo;
+
 say:
-<PRE>
-extern int foo;
-</PRE>
-This is poor style and should be completely avoided (and might
-go away in C9X!).
-Similarly, don't declare a function with implicit return type.
-If it returns a meaningful integer value, declare it `int`.  If
-it returns no meaningful value, declare it `void`.
-(By the way, the C standard requires you to declare `main()`
-as returning `int`.)
-<P>
-Provide typedefs for all `struct` and `union` types,
-and put them before the type declarations.
-Creating the typedef eliminates the clutter of extra `struct`
-and `union` keywords,
-and makes your structures look like first-class types in the language.
-Putting the typedefs before the type declarations allows them to
-be used when declaring circular types.
-It is also nice to have a list of all new reserved words up front.
-<PRE>
-typedef struct Foo Foo;
-typedef struct Bar Bar;
 
-struct Foo {
-	Bar *bar;
-};
+	extern int foo;
 
-struct Bar {
-	Foo *foo;
-};
-</PRE>
-<P>
-This give a particularly nice scheme of exporting opaque objects
-in header files.
-<P>
+This is poor style and should be completely avoided (and might go away in C9X!). Similarly, don't declare a function with implicit return type. If it returns a meaningful integer value, declare it `int`.  If it returns no meaningful value, declare it `void`. (By the way, the C standard requires you to declare `main()` as returning `int`.)
+
+Provide typedefs for all `struct` and `union` types, and put them before the type declarations. Creating the typedef eliminates the clutter of extra `struct`
+and `union` keywords, and makes your structures look like first-class types in the language.
+Putting the typedefs before the type declarations allows them to be used when declaring circular types. It is also nice to have a list of all new reserved words up front.
+
+	typedef struct Foo Foo;
+	typedef struct Bar Bar;
+
+	struct Foo {
+		Bar *bar;
+	};
+
+	struct Bar {
+		Foo *foo;
+	};
+
+
+This give a particularly nice scheme of exporting opaque objects in header files.
+
 In `header.h`:
-<PRE>
-typedef struct Foo Foo;
-</PRE>
-In `source.c`:
-<PRE>
-#include "header.h"
 
-struct Foo { .. };
-</PRE>
+	typedef struct Foo Foo;
+
+In `source.c`:
+
+	#include "header.h"
+
+	struct Foo { .. };
+
 Then a client of header.h can declare a
-<PRE>
-Foo *x;
-</PRE>
-but cannot get at the contents of a `Foo`.
-In addition, the user cannot declare a plain (non pointer) `Foo`,
-and so is forced to go through whatever allocation routines you provide.
-We strongly encourage this modularity technique.
-<P>
-If an `enum` is intended to be declared by the user
-(as opposed to just being used as names for integer values),
-give it a typedef too.
-Note that the typedef has to come **after** the
+
+	Foo *x;
+
+but cannot get at the contents of a `Foo`. In addition, the user cannot declare a plain (non pointer) `Foo`, and so is forced to go through whatever allocation routines you provide. We strongly encourage this modularity technique.
+
+If an `enum` is intended to be declared by the user (as opposed to just being used as names for integer values), give it a typedef too. Note that the typedef has to come **after** the
 `enum` declaration.
-<P>
+
 Don't mix any declarations in with type definitions; i.e., don't say:
-<PRE>
-struct foo {
-	int x;
-} object;
-</PRE>
+
+	struct foo {
+		int x;
+	} object;
+
 Also don't say:
-<PRE>
-typedef struct {
-	int x;
-} type;
-</PRE>
+
+	typedef struct {
+		int x;
+	} type;
+
 (It's important for all typedefs to stand out by themselves.)
-<P>
-Declare each field of a structure on a line by itself.  Think about
-the order of the fields.  Try to keep related fields grouped.  Within
-groups of related fields, pick some uniform scheme for organizing
-them, for example alphabetically or by frequency of use.  When all
-other considerations are equal, place larger fields first, as C's
-alignment rules may then permit the compiler to save space by not
-introducing "holes" in the structure layout.
+
+Declare each field of a structure on a line by itself.  Think about the order of the fields. Try to keep related fields grouped.  Within groups of related fields, pick some uniform scheme for organizing them, for example alphabetically or by frequency of use.  When all other considerations are equal, place larger fields first, as C's alignment rules may then permit the compiler to save space by not introducing "holes" in the structure layout.
 
 ## Use of the Preprocessor
 
