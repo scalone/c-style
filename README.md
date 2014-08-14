@@ -277,66 +277,46 @@ Declare each field of a structure on a line by itself.  Think about the order of
 ## Use of the Preprocessor
 
 For constants, consider using:
-<PRE>
-enum { Red = 0xF00, Blue = 0x0F0, Green = 0x00F };
-static const float pi = 3.14159265358;
-</PRE>
+
+	enum { Red = 0xF00, Blue = 0x0F0, Green = 0x00F };
+	static const float pi = 3.14159265358;
+
 instead of `#defines`, which are rarely visible in debuggers.
-<P>
-Macros should avoid side effects.  If possible, mention each
-argument exactly once.  Fully parenthesize all arguments.
-When the macro is an expression, parenthesize the whole macro
-body.  If the macro is the inline expansion of some function,
-the name of the macro should be the same as that of the function,
-except fully capitalized.  When continuing a macro across
-multiple lines with backslashes, line up the backslashes
-way over on the right edge of the screen
-to keep them from cluttering up the code.
-<PRE>
-#define OBNOXIOUS(X)					\
-	(save = (X),					\
-	 dosomethingwith(X),				\
-	 (X) = save)
-</PRE>
-Try to write macros so that they are syntactically
-expressions.  C's comma and conditional operators are particularly
-valuable for this.  If you absolutely cannot write the macro
-as an expression, enclose the macro body in
-`do { ... } while (0)`.
-This way the expanded macro plus a trailing semicolon
-becomes a syntactic statement.
-<P>
-If you think you need to use `#ifdef`, consider restricting
-the dependent code to a single module.
-For instance, if you need to have different code for Unix and
-MS_DOS, instead of having `#ifdef unix` and `#ifdef dos`
-everywhere, try to have files `unix.c` and `dos.c`
-with identical interfaces.
-If you can't avoid them, make sure to document the end of the
-conditional code:
-<PRE>
-#ifdef FUBAR
-	<VAR>some code</VAR>
-#else
-	<VAR>other code</VAR>
-#endif /* FUBAR */
-</PRE>
+
+Macros should avoid side effects.  If possible, mention each argument exactly once.  Fully parenthesize all arguments. When the macro is an expression, parenthesize the whole macro body.  If the macro is the inline expansion of some function, the name of the macro should be the same as that of the function, except fully capitalized.  When continuing a macro across multiple lines with backslashes, line up the backslashes way over on the right edge of the screen to keep them from cluttering up the code.
+
+	#define OBNOXIOUS(X)				\
+		(save = (X),					\
+		dosomethingwith(X),				\
+		(X) = save)
+
+Try to write macros so that they are syntactically expressions.  C's comma and conditional operators are particularly valuable for this.  If you absolutely cannot write the macro as an expression, enclose the macro body in `do { ... } while (0)`. This way the expanded macro plus a trailing semicolon becomes a syntactic statement.
+
+If you think you need to use `#ifdef`, consider restricting the dependent code to a single module. For instance, if you need to have different code for Unix and MS_DOS, instead of having `#ifdef unix` and `#ifdef dos` everywhere, try to have files `unix.c` and `dos.c`
+with identical interfaces. If you can't avoid them, make sure to document the end of the conditional code:
+
+	#ifdef FUBAR
+		<some code>
+	#else
+		<other code>
+	#endif /* FUBAR */
+
 Some sanctioned uses of the preprocessor are:
+- Commenting out code: Use `#if` 0.
+- Using GNU C extensions: Surround with `#ifdef __GNUC__`.
+- Testing numerical limits: Feel free to conditionalize on the constants in the standard headers `<float.h>` and `<limits.h>`.
 
-If you use an `#if` to test whether some condition holds that you
-know how to handle, but are too lazy to provide code for the
-alternative, protect it with `#error`, like this:
-<PRE>
-#include &lt;limits.h&gt;
+If you use an `#if` to test whether some condition holds that you know how to handle, but are too lazy to provide code for the alternative, protect it with `#error`, like this:
 
-#if INT_MAX > UCHAR_MAX
-enum { Foo = UCHAR_MAX + 1, Bar, Baz, Barf };
-#else
-#error "need int wider than char"
-#endif
-</PRE>
-(This example also illustrates a reasonable
-use of &lt;limits.h&gt;.)
+	#include &lt;limits.h&gt;
+
+	#if INT_MAX > UCHAR_MAX
+		enum { Foo = UCHAR_MAX + 1, Bar, Baz, Barf };
+	#else
+		#error "need int wider than char"
+	#endif
+
+(This example also illustrates a reasonable use of `limits.h`)
 
 ## Naming Conventions
 
