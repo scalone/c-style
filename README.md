@@ -320,262 +320,162 @@ If you use an `#if` to test whether some condition holds that you know how to ha
 
 ## Naming Conventions
 
-<P>
-Names should be meaningful in the **application** domain,
-not the **implementation** domain.
-This makes your code clearer to a reader
-who is familiar with the problem you're trying to solve,
-but is not familiar with your particular way of solving it.
-Also, you may want the implementation to change some day.
-Note that well-structured code is layered internally, so your
-implementation domain is also the application domain for lower levels.
+Names should be meaningful in the **application** domain, not the **implementation** domain.
+This makes your code clearer to a reader who is familiar with the problem you're trying to solve, but is not familiar with your particular way of solving it. Also, you may want the implementation to change some day. Note that well-structured code is layered internally, so your implementation domain is also the application domain for lower levels.
 
-<P>
-Names should be chosen to make sense when your program is read.
-Thus, all names should be parts of speech which will make sense
-when used with the language's syntactic keywords.
-Variables should be noun clauses.
-Boolean variables should be named for the meaning of their "true" value.
-Procedures (functions called for their side-effects) should be
-named for what they do, not how they do it.
-Function names should reflect what they _return_,
-and boolean-valued functions of an object should be named for the
-property their true value implies about the object.
-Functions are used in expressions, often in things like if's,
-so they need to read appropriately.
-For instance,
-<PRE>
-if (checksize(s))
-</PRE>
-is unhelpful because we can't deduce whether `checksize`
-returns true on error or non-error; instead
-<PRE>
-if (validsize(s))
-</PRE>
-makes the point clear and makes a future mistake in using
-the routine less likely.
+Names should be chosen to make sense when your program is read. Thus, all names should be parts of speech which will make sense when used with the language's syntactic keywords.
+Variables should be noun clauses. Boolean variables should be named for the meaning of their "true" value. Procedures (functions called for their side-effects) should be named for what they do, not how they do it. Function names should reflect what they _return_, and boolean-valued functions of an object should be named for the property their true value implies about he object. Functions are used in expressions, often in things like if's, so they need to read appropriately. For instance,
 
-<P>
-Longer names contain more information than short names,
-but extract a price in readability.
-Compare the following examples:
-<PRE>
-for (elementindex = 0; elementindex &lt; DIMENSION; ++elementindex)
-	printf("%d\n", element[elementindex]);
+	if (checksize(s))
 
-for (i = 0; i &lt; DIMENSION; ++i)
-	printf("%d\n", element[i]);
-</PRE>
-In the first example, you have to read more text before you
-can recognize the for-loop idiom, and then you have to do still more
-hard work to parse the loop body.
-Since clarity is our goal, a name should contain only the information
-that it has to.
+is unhelpful because we can't deduce whether `checksize` returns true on error or non-error; instead
 
-<P>
-Carrying information in a name is unnecessary if the declaration and
-use of that name is constrained within a small scope.
-Local variables are
-usually being used to hold intermediate values or control information
-for some computation, and as such have little importance in themselves.
-For example, for array indices names like `i`, `j`,
-and `k` are not just acceptable, they are desirable.
+	if (validsize(s))
 
-<P>
-Similarly, a global variable named `x` would be just as inappropriate
-as a local variable named `elementindex`.
-By definition, a global variable is used in more than one function or
-module (otherwise it would be static or local),
-so all of it's uses will not be visible at once.
-The name has to explain the use of the variable on its own.
-Nevertheless there is still a readability penalty for long names:
-`casefold` is better than
-`case_fold_flag_set_by_main`.
+makes the point clear and makes a future mistake in using the routine less likely.
 
-<P>
-In short,
-follow "Mike's Rule" to make variable name size proportional to scope:
-<PRE>
+Longer names contain more information than short names, but extract a price in readability. Compare the following examples:
+
+	for (elementindex = 0; elementindex &lt; DIMENSION; ++elementindex)
+		printf("%d\n", element[elementindex]);
+
+	for (i = 0; i &lt; DIMENSION; ++i)
+		printf("%d\n", element[i]);
+
+In the first example, you have to read more text before you can recognize the for-loop idiom, and then you have to do still more hard work to parse the loop body. Since clarity is our goal, a name should contain only the information that it has to.
+
+Carrying information in a name is unnecessary if the declaration and use of that name is constrained within a small scope. Local variables are usually being used to hold intermediate values or control information for some computation, and as such have little importance in themselves. For example, for array indices names like `i`, `j`, and `k` are not just acceptable, they are desirable.
+
+Similarly, a global variable named `x` would be just as inappropriate as a local variable named `elementindex`. By definition, a global variable is used in more than one function or
+module (otherwise it would be static or local), so all of it's uses will not be visible at once. The name has to explain the use of the variable on its own. Nevertheless there is still a readability penalty for long names: `casefold` is better than `case_fold_flag_set_by_main`.
+
+In short, follow "Mike's Rule" to make variable name size proportional to scope:
+
 	length(name(variable)) ~ log(countlines(scope(variable)))
-</PRE>
 
-<P>
-Use some consistent scheme for naming related variables.
-If the top of memory is called `physlim`,
-should the bottom be `membase`?
-Consider the suffix -`max` to denote an inclusive limit,
-and -`lim` to denote an exclusive limit.
+Use some consistent scheme for naming related variables. If the top of memory is called `physlim`, should the bottom be `membase`? Consider the suffix -`max` to denote an inclusive limit, and -`lim` to denote an exclusive limit.
 
-<P>
-Don't take this too far, though.
-Avoid ``Hungarian''-style naming conventions which encode type
-information in variable names.
-They may be systematic, but they'll screw you if you ever need to change
-the type of a variable.
-If the variable has a small scope, the type will be visible in
-the declaration, so the annotation is useless clutter.
-If the variable has a large scope, the code should modular
-against a change in the variable's type.
-In general, I think any deterministic algorithm for
-producing variable names will have the same effect.
+Don't take this too far, though. Avoid "Hungarian"-style naming conventions which encode type
+information in variable names. They may be systematic, but they'll screw you if you ever need to change the type of a variable. If the variable has a small scope, the type will be visible in the declaration, so the annotation is useless clutter. If the variable has a large scope, the code should modular against a change in the variable's type. In general, I think any deterministic algorithm for producing variable names will have the same effect.
 
-<P>
-Nevertheless, if the type name is a good **application-domain**
-description of the variable, then use it, or a suitable abbreviation.
-For instance, when implementing an ADT I would write:
-<PRE>
-/*
- * Execute registered callback and close socket.
- */
-void
-chan_close(Chan *chan)	/* No better name for parameter than "chan" */
-{
-	(*chan->deactivate)(chan->arg);
-	(void) close(chan->fd);
-}
-</PRE>
+Nevertheless, if the type name is a good **application-domain** description of the variable, then use it, or a suitable abbreviation. For instance, when implementing an ADT I would write:
+
+	/*
+	 * Execute registered callback and close socket.
+	 */
+	void
+	chan_close(Chan *chan)	/* No better name for parameter than "chan" */
+	{
+		(*chan->deactivate)(chan->arg);
+		(void) close(chan->fd);
+	}
+
 but when using the ADT I would write:
-<PRE>
-/*
- * Log a message when the watched-for event happens.
- */
-struct Monitor {
-	int (*trigger)(void *region);
-	void *region;
-	char *message;
-	Chan *log;		/* describes how Chan is used */
-};
-</PRE>
 
-<P>
-There are weaknesses in C for large-scale programming - there is only
-a single, flat name scope level greater than the module level.
-Therefore, libraries whose implementations have more than one module
-can't guard their inter-module linkage from conflicting with
-any other global identifiers.
-The best solution to this problem is to give each library a short
-prefix that it prepends to all global identifiers.
+	/*
+	 * Log a message when the watched-for event happens.
+	 */
+	struct Monitor {
+		int (*trigger)(void *region);
+		void *region;
+		char *message;
+		Chan *log;		/* describes how Chan is used */
+	};
 
-<P>
-Abbreviations or acronyms can shorten things up, but may not offer
-compelling savings over short full words.
-When a name has to consist of several words (and it often doesn't),
-separate words by underscores, not by BiCapitalization.
-It will look better to English-readers (the underscore is the
-space-which-is-not-a-space).
-Capitalization is reserved for distinguishing syntactic namespaces.
+There are weaknesses in C for large-scale programming - there is only a single, flat name scope level greater than the module level. Therefore, libraries whose implementations have more than one module can't guard their inter-module linkage from conflicting with any other global identifiers. The best solution to this problem is to give each library a short prefix that it prepends to all global identifiers.
 
-<P>
-C has a variety of separately maintained namespaces,
-and distinguishing the names by capitalization improves
-the odds of C's namespaces and scoping protecting you from collisions
-while allowing you to use the same word across different spaces.
-C provides separate namespaces for:
-<DL>
+Abbreviations or acronyms can shorten things up, but may not offer compelling savings over short full words. When a name has to consist of several words (and it often doesn't), separate words by underscores, not by BiCapitalization. It will look better to English-readers (the underscore is the space-which-is-not-a-space). Capitalization is reserved for distinguishing syntactic namespaces.
 
-<DT> Preprocessor Symbols
-<DD> Since macros can be dangerous, follow tradition fully capitalize them,
-	otherwise following the conventions for function or variable names.
-	<PRE>
+C has a variety of separately maintained namespaces, and distinguishing the names by capitalization improves the odds of C's namespaces and scoping protecting you from collisions while allowing you to use the same word across different spaces. C provides separate namespaces for:
+
+**Preprocessor Symbols**
+<DD>
+Since macros can be dangerous, follow tradition fully capitalize them, otherwise following the conventions for function or variable names.
+
 	#define NUSERTASKS 8
 	#define ISNORMAL(S) ((S)->state == Normal)
-	</PRE>
-	Any fully capitalized names can be regarded as fair game for
-	`#ifdef`, although perhaps not for `#if`.
 
-<DT> Labels
-<DD> Limited to function scope, so give it a short name, lowercase.
-	Give meaningful name such that the corresponding `goto`
-	statement can  be read aloud, and name it for **why**
-	you go there, not what you do when you get there.  For instance,
-	<PRE>
+Any fully capitalized names can be regarded as fair game for `#ifdef`, although perhaps not for `#if`.
+</DD>
+
+**Labels**
+<DD>
+Limited to function scope, so give it a short name, lowercase. Give meaningful name such that the corresponding `goto` statement can  be read aloud, and name it for **why** you go there, not what you do when you get there.  For instance,
+
 	goto bounds_error;
-	</PRE>
-	is more helpful than
-	<PRE>
+
+is more helpful than
+
 	goto restore_pointer;
-	</PRE>
 
-<DT> Structure, Union, or Enumeration Tags
-<DD> Having these as separate namespaces creates an artificial distinction
-	between structure, union, and enumeration types and ordinary
-	scalar types.  i.e. you can't simplify a struct type to a scalar
-	type by replacing
-	<PRE>
+</DD>
+**Structure, Union, or Enumeration Tags**
+<DD>
+Having these as separate namespaces creates an artificial distinction between structure, union, and enumeration types and ordinary scalar types.  i.e. you can't simplify a struct type to a scalar	type by replacing
+
 	struct Foo { long bar; };
-	</PRE>
-	with
-	<PRE>
+
+with
+
 	typedef long Foo;
-	</PRE>
-	since you still have the "struct" keyword everywhere,
-	even when the contents are not being examined.
-	The useless "struct" keywords also clutter up the code.
-	Therefore we advocate creating a typedef mirror of all struct tags:
-	<PRE>
-	typedef struct Foo Foo;
-	</PRE>
-	Capitalize the tag name to match the typedef name.
 
-<DT> Structure or Union Members
-<DD> Each structure or union has a separate name space for its members,
-	so there is no need to add a distinguishing prefix.
-	When used in expressions they will follow a variable name, so
-	make them lowercase to make the code look nice.
-	If the type of a member is an ADT, the name of the type is
-	often a good choice for the name of the variable (but in lowercase).
-	You do **not** prefix the member names, as in:
-	<PRE>
-		struct timeval { unsigned long tv_sec; long tv_usec; };
-	</PRE>
-	for they are already in a unique namespace.
+since you still have the "struct" keyword everywhere, even when the contents are not being examined. The useless "struct" keywords also clutter up the code. Therefore we advocate creating a typedef mirror of all struct tags:
 
-<DT> Ordinary Identifiers
-<DD> all other ordinary identifiers (declared in ordinary declarators,
-	or as enumerations constants).
-	<DL>
+		typedef struct Foo Foo;
 
-	<DT> Typedef Names
-	<DD> Capitalized, with no `_t` suffix or other cutesy
-		thing to say ``I'm a type'' - we can see that from it's position
-		in the declaration!
-		(Besides, all names ending with `_t` are reserved by Posix.)
-		The capitalization is needed to distinguish type names from
-		variable names - often both want to use the same application-level
-		word.
+Capitalize the tag name to match the typedef name.
 
-	<DT> Enumeration Constants
-	<DD> Capitalize.  If absolutely necessary, consider a prefix.
-		<PRE>
-		enum Fruit { Apples, Oranges, Kumquats };
-		</PRE>
+</DD>
 
-	<DT> Function Names
-	<DD> Lowercase.  If they are `static` (and most should be),
-		make the name short and sweet.  If they are externally-visibly, try to
-		give then a prefix unique to the module or library.
+**Structure or Union Members**
 
-	<DT> Function Parameters
-	<DD> Since they will be used as variables in the function body,
- 	 	use the conventions for variables.
+<DD>
+Each structure or union has a separate name space for its members, so there is no need to add a distinguishing prefix. When used in expressions they will follow a variable name, so make them lowercase to make the code look nice. If the type of a member is an ADT, the name of the type is often a good choice for the name of the variable (but in lowercase). You do **not** prefix the member names, as in:
 
-	<DT> Variables
-	<DD> Lowercase.
+	struct timeval { unsigned long tv_sec; long tv_usec; };
 
-	</DL>
-</DL>
+for they are already in a unique namespace.
 
-<P>
-Lastly, develop some standard idioms to make names automatic.
-For instance:
-<PRE>
-int i, j, k;	/* generic indices */
-char *s, *t;	/* string pointers */
-char *buf;	/* character array */
-double x, y, z;	/* generic floating-point */
-size_t n, m, size;	/* results of sizeof or arguments to malloc */
-Foo foo, *pfoo, **ppfoo;	/* sometimes a little hint helps */
-</PRE>
+</DD>
+
+**Ordinary Identifiers**
+
+<DD>
+all other ordinary identifiers (declared in ordinary declarators, or as enumerations constants).
+
+**Typedef Names**
+
+Capitalized, with no `_t` suffix or other cutesy thing to say "I'm a type" - we can see that from it's position in the declaration! (Besides, all names ending with `_t` are reserved by Posix.) The capitalization is needed to distinguish type names from variable names - often both want to use the same application-level word.
+
+**Enumeration Constants**
+
+Capitalize.  If absolutely necessary, consider a prefix.
+
+	enum Fruit { Apples, Oranges, Kumquats };
+
+**Function Names**
+
+Lowercase.  If they are `static` (and most should be), make the name short and sweet.  If they are externally-visibly, try to give then a prefix unique to the module or library.
+
+**Function Parameters**
+
+Since they will be used as variables in the function body, use the conventions for variables.
+
+
+**Variables**
+
+Lowercase
+
+</DD>
+
+Lastly, develop some standard idioms to make names automatic. For instance:
+
+	int i, j, k;	          /* generic indices */
+	char *s, *t;	          /* string pointers */
+	char *buf;	              /* character array */
+	double x, y, z;	          /* generic floating-point */
+	size_t n, m, size;	      /* results of sizeof or arguments to malloc */
+	Foo foo, *pfoo, **ppfoo;  /* sometimes a little hint helps */
 
 ## Indentation and Layout
 
