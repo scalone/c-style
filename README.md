@@ -479,258 +479,163 @@ Lastly, develop some standard idioms to make names automatic. For instance:
 
 ## Indentation and Layout
 
-Try to stay inside the mythical 79 column limit.  If you can't, look for
-a tasteful place to break the line (there are some ideas below).  Avoid
-ideas that would lead to indenting that doesn't align on a tab stop.
-If worst comes to worst, grit your teeth and tolerate the long line.
-<P>
-Use real tab characters for indenting.
-Tabs are always 8 spaces.
-This policy has the following advantages:
+Try to stay inside the mythical 79 column limit.  If you can't, look for a tasteful place to break the line (there are some ideas below).  Avoid ideas that would lead to indenting that doesn't align on a tab stop. If worst comes to worst, grit your teeth and tolerate the long line.
+
+Use real tab characters for indenting. Tabs are always 8 spaces. This policy has the following advantages:
+
+- It doesn't require a fancy editor; not everyone uses emacs.
+- It is easy to write miscellaneous program text processing tools that count leading tabs.
+- It encourages you to break deeply nested code into [functions](#functions).
 
 If you use short names and write simple code, your horizontal space
 goes a long way even with tab indenting.
-<P>
-Use the One True Brace Style (1TBS) as seen in K&amp;R.
-The following quotation from Henry Spencer's
-<CITE>Ten Commandments for C Programmers</CITE> says it better than I can:
-> _
-> Thou shalt make thy program's purpose and structure
-> clear to thy fellow man by using the One True Brace
-> Style, even if thou likest it not, for thy creativity
-> is better used in solving problems than in creating
-> beautiful new impediments to understanding.
-> <P>
-> - The Eighth Commandment
-> _
-The rationale behind this brace style, straight from the horse's
-(Dennis') mouth, is that the braces are just line noise to make the
-compiler happy, and so don't deserve to be specially set apart.
-(The GNU style is a particularly bad offender in this regard!)
-Also, the 1TBS conserves vertical space,
-which is important for those of us working on 24 line displays.
-(It also helps avoid excessive eye movement on big displays.)
-<P>
-Purists point out that 1TBS is inconsistent since it has one style
-for statements and another for functions.
-That's okay since functions are special anyway (you can't nest them).
-It's also good to know that with most editors you can get to the top
-of the current function by searching backward for the regexp `^{`.
-<P>
-Avoid unnecessary curly braces, but if one branch of an `if`
-is braced, then the other should be too, even if it is only a
-single line.
-If an inner nested block is braced, then the outer blocks
-should be too.
-<P>
+
+Use the One True Brace Style (1TBS) as seen in K&R. The following quotation from Henry Spencer's <CITE>Ten Commandments for C Programmers</CITE> says it better than I can:
+
+> Thou shalt make thy program's purpose and structure clear to thy fellow man by using the One True Brace Style, even if thou likest it not, for thy creativity is better used in solving problems than in creating beautiful new impediments to understanding.
+>
+> \-  The Eighth Commandment
+
+The rationale behind this brace style, straight from the horse's (Dennis') mouth, is that the braces are just line noise to make the compiler happy, and so don't deserve to be specially set apart. (The GNU style is a particularly bad offender in this regard!) Also, the 1TBS conserves vertical space, which is important for those of us working on 24 line displays.
+(It also helps avoid excessive eye movement on big displays).
+
+Purists point out that 1TBS is inconsistent since it has one style for statements and another for functions. That's okay since functions are special anyway (you can't nest them). It's also good to know that with most editors you can get to the top of the current function by searching backward for the regexp `^{`.
+
+Avoid unnecessary curly braces, but if one branch of an `if` is braced, then the other should be too, even if it is only a single line. If an inner nested block is braced, then the outer blocks should be too.
+
 Some examples:
-<PRE>
-if (foo == 7) {
-	bar();
-} else if (foo == 9) {
-	barf();
-	bletch();
-} else {
-	boondoggle();
-	frobnicate();
-}
 
-do {
-	for (i = 0; i < n; ++i)
-		a[i] = 0;
-	plugh();
-	xyzzy();
-} while (!blurf());
-</PRE>
-<P>
-In `switch` statements, be sure every case ends with either a
-`break`, `continue`, `return`, or
-`/* fall through */`
-comment.  Especially don't forget to put a `break` on the last
-case of a `switch` statement.  If you do, I promise someone will
-forget to add one someday when adding new cases.
-<PRE>
-switch (phase) {
-case New:
-	printf("don't do any coding tonight\n");
-	break;
-case Full:
-	printf("beware lycanthropes\n");
-	break;
-case Waxing:
-case Waning:
-	printf("the heavens are neutral\n");
-	break;
-default:
-	/*
-	 * Include occasional sanity checks in your code.
-	 */
-	fprintf(stderr, "and here you thought this couldn't happen!\n");
-	abort();
-}
-</PRE>
-This last example also illustrates how to handle labels, including case
-labels and goto labels: put each label on a line by itself, and
-outdent it by a tab stop.  However, if outdenting a label would take
-it all the way out to the left edge of the screen, insert a leading
-space.
-<P>
-Use `goto` sparingly.  Two harmless places to use it are to break
-out of a multilevel loop, or to jump to common function exit code.
-(Often these are the same places.)
-<P>
+	if (foo == 7) {
+		bar();
+	} else if (foo == 9) {
+		barf();
+		bletch();
+	} else {
+		boondoggle();
+		frobnicate();
+	}
+
+	do {
+		for (i = 0; i < n; ++i)
+			a[i] = 0;
+		plugh();
+		xyzzy();
+	} while (!blurf());
+
+In `switch` statements, be sure every case ends with either a `break`, `continue`, `return`, or `/* fall through */` comment.  Especially don't forget to put a `break` on the last case of a `switch` statement.  If you do, I promise someone will forget to add one someday when adding new cases.
+
+	switch (phase) {
+	case New:
+		printf("don't do any coding tonight\n");
+		break;
+	case Full:
+		printf("beware lycanthropes\n");
+		break;
+	case Waxing:
+	case Waning:
+		printf("the heavens are neutral\n");
+		break;
+	default:
+		/*
+		 * Include occasional sanity checks in your code.
+		 */
+		fprintf(stderr, "and here you thought this couldn't happen!\n");
+		abort();
+	}
+
+This last example also illustrates how to handle labels, including case labels and goto labels: put each label on a line by itself, and outdent it by a tab stop.  However, if outdenting a label would take it all the way out to the left edge of the screen, insert a leading space.
+
+Use `goto` sparingly.  Two harmless places to use it are to break out of a multilevel loop, or to jump to common function exit code. (Often these are the same places.)
+
 Lay out your functions like this:
-<PRE>
-/*
- * <VAR>Optional comment describing the function.</VAR>
- */
-<VAR>type</VAR>
-<VAR>name</VAR>(<VAR>args</VAR>)
-{
-	<VAR>declarations</VAR>
 
-	<VAR>code</VAR>
-}
-</PRE>
-It is important that the name of the function be in the first column
-of text with no indentation.
-Some text processing utilities (e.g. `etags`) rely on
-this to find function definitions.
-Even if you don't use such tools, it's extremely helpful to know
-that the regular expression `^`<VAR>name</VAR> matches
-the single definition of the function.
-<P>
-Note that we will _not_ be using old-style function definitions
-where the args are declared outside the parameter list.
-Include a blank line between the local variable declarations and the code.
-Also feel free to include other blank lines, particularly to separate
+	/*
+	 * Optional comment describing the function.
+	 */
+	<type>
+	<name>(<args>)
+	{
+		<declarations>
+
+		<code>
+	}
+
+It is important that the name of the function be in the first column of text with no indentation. Some text processing utilities (e.g. `etags`) rely on this to find function definitions. Even if you don't use such tools, it's extremely helpful to know that the regular expression `^name` matches the single definition of the function.
+
+Note that we will _not_ be using old-style function definitions where the args are declared outside the parameter list. Include a blank line between the local variable declarations and the code. Also feel free to include other blank lines, particularly to separate
 major blocks of code.
-<P>
-Multiple declarations can go on one line, but if the line gets too
-long don't try to continue it in some fancy way, just start a new
-declaration on the next line.
-Avoid declarations in all but the most complex inner blocks.
-Avoid initializations of automatic variable in declarations,
-since they can be mildly disconcerting when stepping through
-code with a debugger.
-Don't declare external objects inside functions, declare them at file scope.
-Finally, don't try to go into denial over C's ``declaration by example''
-syntax.
-Say:
-<PRE>
-char *p;
-</PRE>
+
+Multiple declarations can go on one line, but if the line gets too long don't try to continue it in some fancy way, just start a new declaration on the next line. Avoid declarations in all but the most complex inner blocks. Avoid initializations of automatic variable in declarations, since they can be mildly disconcerting when stepping through code with a debugger. Don't declare external objects inside functions, declare them at file scope. Finally, don't try to go into denial over C's "declaration by example" syntax. Say:
+
+	char *p;
+
 not:
-<PRE>
-char* p;
-</PRE>
-In the long run, such fights with the language will only cause you grief.
-(One of the reason's Stroustrup's original C++ book was practically
-unreadable was because he was constantly fighting with C.)
-<P>
-Use spaces around keywords.
-Use spaces around binary operators,
-except `.` and `->`, for they are morally
-equivalent to array subscripts,
-and the ``punctuation'' operator ','.
-Don't use spaces around unary operators, except `sizeof` and casts.
-Example:
-<PRE>
-x = -y + z + sizeof (Foo) + bar();
-</PRE>
-Note that function call is a unary operator, so don't use
-a space between a function name and the opening parenthesis
-of the arguments.  The reason for making an exception for
-`sizeof` is that it is a syntactic keyword, not a function.
-These rules lead to:
-<PRE>
-if (something)
-</PRE>
+
+	char* p;
+
+In the long run, such fights with the language will only cause you grief. (One of the reason's Stroustrup's original C++ book was practically unreadable was because he was constantly lighting with C.)
+
+Use spaces around keywords. Use spaces around binary operators, except `.` and `->`, for they are morally equivalent to array subscripts, and the "punctuation" operator `,`. Don't use spaces around unary operators, except `sizeof` and casts. Example:
+
+	x = -y + z + sizeof (Foo) + bar();
+
+Note that function call is a unary operator, so don't use a space between a function name and the opening parenthesis of the arguments.  The reason for making an exception for `sizeof` is that it is a syntactic keyword, not a function. These rules lead to:
+
+	if (something)
+
 for syntactic keywords, and
-<PRE>
-foo(something)
-</PRE>
-for functions.  Don't parenthesize things unnecessarily;
-say
-<PRE>
-return 7;
-</PRE>
+
+	foo(something)
+
+for functions.  Don't parenthesize things unnecessarily; say
+
+	return 7;
+
 not
-<PRE>
-return (7);
-</PRE>
+
+	return (7);
+
 and especially not
-<PRE>
-return(7);
-</PRE>
-Remember, return is the exact antonym of function call!
-<A NAME="parens"></A>
-The parsing precedence of the bitwise operations
-(`&`, `|`, `^`, `~`)
-can be surprising.
-See [Ritchie's
-explanation](http://www.lysator.liu.se/c/dmr-on-or.html#main) for the reasons why.
-Always use full parentheses around these operators.
-<P>
-Some C style guides take this a bit too far, though.
-One author went as far as to suggest that C programmers should
-rely on `*` and `/` bind more tightly than
-`+` and `-`, and parenthesize the rest.
-This is a good way to write Lisp code, but it makes C look ugly.
-A C programmer should be able to recognize its idioms and
-be able to parse code like:
-<PRE>
-while (*s++ = *t++)
-	;
-</PRE>
-<P>
-If an expression gets too long to fit in a line, break it next
-to a binary operator.  Put the operator at the beginning of the
-next line to emphasize that it is continued from the previous
-line.  Don't add additional indenting to the continued line.
-This strategy leads to particularly nice results when breaking
-up complicated conditional expressions:
-<PRE>
-if (x == 2 || x == 3 || x == 5 || x == 7
-|| x == 11 || x == 13 || x == 17 || x == 19)
-	printf("x is a small prime\n");
-</PRE>
-This example also illustrates why you shouldn't add additional
-indenting when continuing a line - in this case, it could get confused
-with the condition body.  Avoid breakpoints that will give the
-reader false notions about operator precedence, like this:
-<PRE>
-if (x == 2 || x > 10
-&amp;&amp; x < 12 || x == 19)
-</PRE>
-If you're breaking an expression across more than two lines,
-try to use the same kind of breakpoint for each line.  Finally,
-if you're getting into really long expressions, your code is
-probably in need of a rewrite.
-<P>
-Avoid sloppiness.  Decide what your style is and follow it
-precisely.  I often see code like this:
-<PRE>
-struct foo
-{
-	int baz ;
-	int  barf;
-	char * x, *y;
-};
-</PRE>
-All those random extra spaces make me wonder if the programmer
-was even paying attention!
-<P>
-The `indent` utility can automatically check most
-of these indentation conventions.
-The style given here corresponds to the indent options
-<PRE>
--bap -bad -nbc -bs -ci0 -di1 -i8
-</PRE>
-which can be specified in a file named `indent.pro`
-in your home directory.
-Note that `indent` tends to mess up `typedef`-defined
-identifiers unless they are explicitly given on the command line.
+
+	return(7);
+
+Remember, return is the exact antonym of function call! <A NAME="parens"></A>The parsing precedence of the bitwise operations (`&`, `|`, `^`, `~`) can be surprising. See [Ritchie's explanation](http://www.lysator.liu.se/c/dmr-on-or.html#main) for the reasons why. Always use full parentheses around these operators.
+
+Some C style guides take this a bit too far, though. One author went as far as to suggest that C programmers should rely on `*` and `/` bind more tightly than `+` and `-`, and parenthesize the rest. This is a good way to write Lisp code, but it makes C look ugly. A C programmer should be able to recognize its idioms and be able to parse code like:
+
+	while (*s++ = *t++)
+		;
+
+If an expression gets too long to fit in a line, break it next to a binary operator.  Put the operator at the beginning of the next line to emphasize that it is continued from the previous
+line.  Don't add additional inden ting to the continued line. This strategy leads to particularly nice results when breaking up complicated conditional expressions:
+
+	if (x == 2 || x == 3 || x == 5 || x == 7
+	|| x == 11 || x == 13 || x == 17 || x == 19)
+		printf("x is a small prime\n");
+
+This example also illustrates why you shouldn't add additional indenting when continuing a line - in this case, it could get confused with the condition body.  Avoid breakpoints that will give the reader false notions about operator precedence, like this:
+
+	if (x == 2 || x > 10
+	&& x < 12 || x == 19)
+
+If you're breaking an expression across more than two lines, try to use the same kind of breakpoint for each line.  Finally, if you're getting into really long expressions, your code is probably in need of a rewrite.
+
+Avoid sloppiness.  Decide what your style is and follow it precisely.  I often see code like this:
+
+	struct foo
+	{
+		int baz ;
+		int  barf;
+		char * x, *y;
+	};
+
+All those random extra spaces make me wonder if the programmer was even paying attention!
+
+The `indent` utility can automatically check most of these indentation conventions. The style given here corresponds to the indent options
+
+	-bap -bad -nbc -bs -ci0 -di1 -i8
+
+which can be specified in a file named `indent.pro` in your home directory. Note that `indent` tends to mess up `typedef`-defined identifiers unless they are explicitly given on the command line.
 
 ## Expressions and Statements
 
@@ -811,7 +716,7 @@ Don't worry about the details, just use this fact to program consistently.
 This does spoil the potential for calling `main()`
 recursively, which is usually a silly thing to do.
 
-## Functions
+## <A NAME="functions">Functions</A>
 
 Functions should be short and sweet.
 If a function won't fit on a single screen, it's probably too long.
