@@ -695,10 +695,7 @@ However, sometimes it is hard to break things down. Since functions don't nest, 
 
 ## Complexity and Performance
 
-There is a temptation to use all sorts of clever techniques to
-optimize the code.
-However, this optimization comes at a penalty.
-Rob Pike says it better than me:
+There is a temptation to use all sorts of clever techniques to optimize the code. However, this optimization comes at a penalty. Rob Pike says it better than me:
 <DL>
 <DT>	Rule 1
 <DD>	You can't tell where a program is going to spend its time.
@@ -731,13 +728,7 @@ Rob Pike says it better than me:
 
 ## The Standard Library
 
-The standard library is your friend.
-There's no excuse for writing code which already exists there.
-Not only will the standard library's code be tested,
-often it will be more efficient, and will certainly be more
-familiar to your fellow programmers.
-The best book on the subject is Plaugher's
-<CITE>The Standard C Library</CITE>.
+The standard library is your friend. There's no excuse for writing code which already exists there. Not only will the standard library's code be tested, often it will be more efficient, and will certainly be more familiar to your fellow programmers. The best book on the subject is Plaugher's <CITE>The Standard C Library</CITE>.
 
 Some notes on using particular functions:
 <DL>
@@ -752,24 +743,15 @@ Some notes on using particular functions:
 	anything.
 	K&amp;R2, p. 142 gives contrary advice, but it has since been
 	retracted by Dennis Ritchie:
-	> In any case, now that I reread the stuff on p. 142, I think it's
-> 		wrong; it's written in such a way that it's not just defensive
-> 		against earlier rules, it misrepresents the ANSI rules.
-	(From the newsgroup `comp.std.c` on August 15, 1995.)
+> In any case, now that I reread the stuff on p. 142, I think it's wrong; it's written in such a way that it's not just defensive against earlier rules, it misrepresents the ANSI rules.
+
+(From the newsgroup `comp.std.c` on August 15, 1995.)
 
 </DL>
 
 ## Further Reading
 
-There is a wonderful Web page on
-[Programming in C](http://www.lysator.liu.se/c/index.html)
-which features such goodies as Rob Pike's
-[Notes on
-Programming in C](http://www.lysator.liu.se/c/pikestyle.html), Henry Spencer's
-[The Ten
-Commandments for C Programmers](http://www.lysator.liu.se/c/ten-commandments.html), and the
-[ANSI C Rationale](http://www.lysator.liu.se/c/rat/title.html).
-These are all required reading.
+There is a wonderful Web page on [Programming in C](http://www.lysator.liu.se/c/index.html) which features such goodies as Rob Pike's [Notes on Programming in C](http://www.lysator.liu.se/c/pikestyle.html), Henry Spencer's [The Ten Commandments for C Programmers](http://www.lysator.liu.se/c/ten-commandments.html), and the [ANSI C Rationale](http://www.lysator.liu.se/c/rat/title.html). These are all required reading.
 
 * * *
 
