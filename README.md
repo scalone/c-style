@@ -689,18 +689,9 @@ Never return from the function `main()`, explicitly use `exit()`. They are no lo
 
 ## <A NAME="functions">Functions</A>
 
-Functions should be short and sweet.
-If a function won't fit on a single screen, it's probably too long.
-Don't be afraid to break functions down into smaller helper functions.
-If they are `static` to the module an optimizing compiler
-can inline them again, if necessary.
-Helper functions can also be reused by other functions.
-<P>
-However, sometimes it is hard to break things down.
-Since functions don't nest, variables have to be communicated
-through function arguments or global variables.
-Don't create huge interfaces to enable a decomposition that
-is just not meant to be.
+Functions should be short and sweet. If a function won't fit on a single screen, it's probably too long. Don't be afraid to break functions down into smaller helper functions. If they are `static` to the module an optimizing compiler can inline them again, if necessary. Helper functions can also be reused by other functions.
+
+However, sometimes it is hard to break things down. Since functions don't nest, variables have to be communicated through function arguments or global variables. Don't create huge interfaces to enable a decomposition that is just not meant to be.
 
 ## Complexity and Performance
 
