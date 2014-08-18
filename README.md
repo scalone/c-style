@@ -639,82 +639,53 @@ which can be specified in a file named `indent.pro` in your home directory. Note
 
 ## Expressions and Statements
 
-In C, assignments are expressions, not statements.
-This allows multiple assignment
-<PRE>
-a = b = c = 1;
-</PRE>
-and assignment within expressions
-<PRE>
-if (!(bp = malloc(sizeof (Buffer)))) {
-	perror("malloc");
-	abort();
-}
-</PRE>
-This capability can sometimes allow concise code,
-but at other times it can obscure important procedure
-calls and updates to variables.
-Use good judgement.
-<P>
-<A NAME="boolean"></A>
-The C language lacks a true boolean type,
-therefore its logic operations (`! == > < >= <=`)
-and tests (in the conditional operator `?:`
-and the `if`, `while`, `do`,
-and `for` statements)
-have some interesting semantics.
-Every boolean test is an implicit comparison against zero (`0`).
-However, zero is not a simple concept.
-It represents:
+In C, assignments are expressions, not statements. This allows multiple assignment
 
-In order to make your intentions clear, explicitly show the comparison
-with zero for all scalars, floating-point numbers, and characters.
-This gives us the tests
-<PRE>
-(i == 0)	(x != 0.0)	(c == '\0')
-</PRE>
+	a = b = c = 1;
+
+and assignment within expressions
+
+	if (!(bp = malloc(sizeof (Buffer)))) {
+		perror("malloc");
+		abort();
+	}
+
+This capability can sometimes allow concise code, but at other times it can obscure important procedure calls and updates to variables. Use good judgement.
+
+<A NAME="boolean"></A>
+The C language lacks a true boolean type, therefore its logic operations (`! == > < >= <=`) and tests (in the conditional operator `?:` and the `if`, `while`, `do`, and `for` statements) have some interesting semantics. Every boolean test is an implicit comparison against zero (`0`). However, zero is not a simple concept. It represents:
+
+- the integer zero for all integral types
+- the floating point 0.0 (positive or negative)
+- the nul character
+- the null pointer
+
+In order to make your intentions clear, explicitly show the comparison with zero for all scalars, floating-point numbers, and characters. This gives us the tests
+
+	(i == 0)	(x != 0.0)	(c == '\0')
+
 instead of
-<PRE>
-(i)		(!x)		(c)
-</PRE>
-An exception is made for pointers, since `0` is the only
-language-level representation for the null pointer.
-(The symbol `NULL` is _not_ part of the core
-language - you have to include a special header file to get it defined.)
-In short, pretend that C has an actual boolean type which is returned
-by the logical operators and expected by the test constructs,
-and pretend that the null pointer is a synonym for false.
-<P>
+
+	(i)		(!x)		(c)
+
+An exception is made for pointers, since `0` is the only language-level representation for the null pointer. (The symbol `NULL` is _not_ part of the core language - you have to include a special header file to get it defined.) In short, pretend that C has an actual boolean type which is returned by the logical operators and expected by the test constructs, and pretend that the null pointer is a synonym for false.
+
 Write infinite loops as:
-<PRE>
-for (;;)
-	...
-</PRE>
+
+	for (;;)
+		...
+
 not
-<PRE>
-while (1)
-	...
-</PRE>
+
+	while (1)
+		...
+
 The former is idiomatic among C programmers, and is more visually distinctive.
-<P>
-Feel free to use a `for` loop where some of the parts are empty.
-The purpose of `for` is to centralize all loop control code in
-one place.
-If you're thinking ``for each of these things, we have to do
-something,'' use a `for` loop.
-If a `for` statement gets too long to
-fit in a line, turn it into a `while`.
-If your loop control is that complicated, it probably isn't what
-`for` is for (pun intended).
-<P>
-Never return from the function `main()`,
-explicitly use `exit()`.
-They are no longer equivalent - there is an important distinction
-when using the `atexit()` feature with objects declared
-locally to `main()`.
-Don't worry about the details, just use this fact to program consistently.
-This does spoil the potential for calling `main()`
-recursively, which is usually a silly thing to do.
+
+Feel free to use a `for` loop where some of the parts are empty. The purpose of `for` is to centralize all loop control code in one place. If you're thinking "for each of these things, we have to do something," use a `for` loop. If a `for` statement gets too long to
+fit in a line, turn it into a `while`. If your loop control is that complicated, it probably isn't what `for` is for (pun intended).
+
+Never return from the function `main()`, explicitly use `exit()`. They are no longer equivalent - there is an important distinction when using the `atexit()` feature with objects declared locally to `main()`. Don't worry about the details, just use this fact to program consistently. This does spoil the potential for calling `main()` recursively, which is usually a silly thing to do.
 
 ## <A NAME="functions">Functions</A>
 
