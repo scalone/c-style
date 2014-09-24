@@ -20,15 +20,6 @@ Your code will look better if you have spent your time deciding
 on which stylistic rule to relax than if you have been making
 choices in a vacuum.
 <P>
-The coding style espoused here is strict and traditional.
-Some of the requirements (especially 8-space tabs and
-non-nested include files) will cause grief for many programs,
-but they will not be a problem for most well-written programs.
-This style makes poorly-written programs blatantly ugly.
-It will occasionally inconvenience well-written code,
-but that is a tradeoff we accept in order to encourage good
-style in general.
-<P>
 Lastly, like rules of etiquette, these guidelines are not
 an end in themselves, but rather they attempt to move you
 to be mindful of your actions, for they are not private -
@@ -481,7 +472,7 @@ Lastly, develop some standard idioms to make names automatic. For instance:
 
 Try to stay inside the mythical 79 column limit.  If you can't, look for a tasteful place to break the line (there are some ideas below).  Avoid ideas that would lead to indenting that doesn't align on a tab stop. If worst comes to worst, grit your teeth and tolerate the long line.
 
-Use real tab characters for indenting. Tabs are always 8 spaces. This policy has the following advantages:
+Use real tab characters for indenting. Tabs are always 4 spaces. This policy has the following advantages:
 
 - It doesn't require a fancy editor; not everyone uses emacs.
 - It is easy to write miscellaneous program text processing tools that count leading tabs.
@@ -633,7 +624,7 @@ All those random extra spaces make me wonder if the programmer was even paying a
 
 The `indent` utility can automatically check most of these indentation conventions. The style given here corresponds to the indent options
 
-	-bap -bad -nbc -bs -ci0 -di1 -i8
+	-bap -bad -nbc -bs -ci0 -di1 -i4
 
 which can be specified in a file named `indent.pro` in your home directory. Note that `indent` tends to mess up `typedef`-defined identifiers unless they are explicitly given on the command line.
 
